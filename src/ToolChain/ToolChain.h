@@ -21,7 +21,7 @@
 #include "DataModel.h"
 #include "Logging.h"
 #include "zmq.hpp"
-#include "Factory.h"
+// #include "Factory.h"
 #include "Store.h"
 #include "ServiceDiscovery.h"
 

@@ -4,6 +4,6 @@
 #include <string>
 #include "Tool.h"
 
-Tool* Factory(std::string tool);
+virtual Tool* Factory(std::string tool);
 
 #endif

@@ -1,5 +1,7 @@
 #include "ToolChain.h"
 
+extern Tool* Factory(std::string);
+
 ToolChain::ToolChain(std::string configfile){
   
   m_data.vars.Initialise(configfile);

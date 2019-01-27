@@ -3,16 +3,18 @@
 
 #include <string>
 
-#include "Store.h"
+// #include "Store.h"
 #include "DataModel.h"
+
+class Store;
 
 class Tool{
   
  public:
   
-  virtual bool Initialise(std::string configfile,DataModel &data)=0;
-  virtual bool Execute()=0;
-  virtual bool Finalise()=0;
+  virtual bool Initialise(std::string configfile,DataModel &data){};
+  virtual bool Execute(){};
+  virtual bool Finalise(){};
   virtual ~Tool(){};
   
  protected:
