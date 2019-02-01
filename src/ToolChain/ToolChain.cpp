@@ -1,5 +1,7 @@
 #include "ToolChain.h"
 
+#include "DataModel.h"
+
 ToolChain::ToolChain(std::string configfile){
   
   m_data.vars.Initialise(configfile);

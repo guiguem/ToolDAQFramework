@@ -6,9 +6,10 @@ cmake_minimum_required (VERSION 3.1)
 #########
 
 cmake_policy( SET CMP0048 NEW ) # version in project()
-project( ToolDAQ VERSION 2.3 )
+project( ToolDAQFramework VERSION 2.3 )
 
 list( APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake )
+list( APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/src/vendor/cppzmq )
 include( PackageBuilder )
 
 pbuilder_prepare_project()
@@ -28,18 +29,28 @@ set ( Scarab_ENABLE_EXECUTABLES OFF )
 # dependencies #
 ########################
 
+# pbuilder_add_submodule( cppzmq src/vendor/libzmq )
+SET (CPPZMQ_BUILD_TESTS OFF CACHE INTERNAL "" FORCE)
+pbuilder_add_submodule( cppzmq src/vendor/cppzmq )
+SET (CPPZMQ_BUILD_TESTS OFF CACHE INTERNAL "" FORCE)
+find_package(cppzmq)
+# pbuilder_add_submodule( cppzmq src/vendor/libzmq )
+# pbuilder_add_submodule( cppzmq src/vendor/cppzmq )
+
+# find_package(cppzmq)
+
 ######
 # Doxygen
 ######
 
-option (ToolDAQ_BUILD_DOC "Build doxygen documentation" OFF)
+option (TOOLDAQ_BUILD_DOC "Build doxygen documentation" OFF)
 
-if (ToolDAQ_BUILD_DOC)
+if (TOOLDAQ_BUILD_DOC)
 # Require dot, treat the other components as optional
     find_package(Doxygen
                 REQUIRED dot
                 OPTIONAL_COMPONENTS mscgen dia)
-endif(ToolDAQ_BUILD_DOC)
+endif(TOOLDAQ_BUILD_DOC)
 
 ######
 # ROOT
@@ -82,8 +93,17 @@ pbuilder_add_ext_libraries (${Boost_LIBRARIES})
 
 # # subdirectories
 include_directories (BEFORE
+    ${PROJECT_SOURCE_DIR}/DataModel
+    ${PROJECT_SOURCE_DIR}/src/Logging
+    ${PROJECT_SOURCE_DIR}/src/ServiceDiscovery
     ${PROJECT_SOURCE_DIR}/src/Store
-#     ${PROJECT_SOURCE_DIR}/Tools/progress-cpp
+    ${PROJECT_SOURCE_DIR}/src/Tool
+    ${PROJECT_SOURCE_DIR}/src/ToolChain
+    ${PROJECT_SOURCE_DIR}/UserTools/DummyTool
+    ${PROJECT_SOURCE_DIR}/UserTools/Factory
+    ${PROJECT_SOURCE_DIR}/UserTools/Logger
+    ${PROJECT_SOURCE_DIR}/UserTools/ServiceAdd
+    ${PROJECT_SOURCE_DIR}/vendor/cppzmq
 #     ${PROJECT_SOURCE_DIR}/apps
 #     # ${PROJECT_SOURCE_DIR}/include
 #     ${PROJECT_SOURCE_DIR}/library/applications
@@ -91,7 +111,16 @@ include_directories (BEFORE
 #     ${PROJECT_SOURCE_DIR}/library/misc
 )
 
+add_subdirectory (DataModel)
+add_subdirectory (src/Logging)
+add_subdirectory (src/ServiceDiscovery)
 add_subdirectory (src/Store)
+add_subdirectory (src/Tool)
+add_subdirectory (src/ToolChain)
+add_subdirectory (UserTools/DummyTool)
+add_subdirectory (UserTools/Factory)
+add_subdirectory (UserTools/Logger)
+add_subdirectory (UserTools/ServiceAdd)
 # add_subdirectory (Tools/progress-cpp)
 # # add_subdirectory (src)
 # add_subdirectory (library/applications)
