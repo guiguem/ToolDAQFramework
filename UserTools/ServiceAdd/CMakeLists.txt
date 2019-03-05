@@ -19,7 +19,7 @@ set( SERVICEADD_SOURCEFILES
 set (SERVICEADD_DEP_LIBRARIES
  BaseDataModel
  Store
- cppzmq
+#  cppzmq
 )
 
 # set( STORE_LINKDEF_HEADERFILE LinkDef/ CoreLinkDef.h )

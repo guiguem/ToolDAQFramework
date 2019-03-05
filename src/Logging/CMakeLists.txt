@@ -18,7 +18,7 @@ set( LOGGING_SOURCEFILES
 
 set (LOGGING_DEP_LIBRARIES
  Store
- cppzmq
+#  libzmq
 )
 
 # set( STORE_LINKDEF_HEADERFILE LinkDef/ CoreLinkDef.h )

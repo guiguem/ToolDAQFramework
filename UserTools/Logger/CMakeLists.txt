@@ -19,7 +19,7 @@ set( LOGGER_SOURCEFILES
 set (LOGGER_DEP_LIBRARIES
  BaseDataModel
  Store
- cppzmq
+#  cppzmq
 )
 
 # set( STORE_LINKDEF_HEADERFILE LinkDef/ CoreLinkDef.h )

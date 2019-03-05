@@ -19,7 +19,7 @@ set( DUMMYTOOL_SOURCEFILES
 set (DUMMYTOOL_DEP_LIBRARIES
  BaseDataModel
  Store
- cppzmq
+#  cppzmq
 )
 
 # set( STORE_LINKDEF_HEADERFILE LinkDef/ CoreLinkDef.h )

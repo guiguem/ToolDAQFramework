@@ -11,7 +11,7 @@ cmake_minimum_required (VERSION 3.1)
 cmake_policy( SET CMP0048 NEW ) # version in project()
 project( ToolDAQFramework VERSION 1.4.7 )
 
-list( APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/src/Scarab/cmake )
+list( APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/src/vendor/scarab/cmake )
 list( APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake )
 include( PackageBuilder )
 
@@ -65,13 +65,20 @@ endif( UNIX AND NOT APPLE )
 # ToolDAQ dependencies #
 ######################
 
+pbuilder_add_submodule( libzmq src/vendor/libzmq )
+pbuilder_add_ext_libraries (libzmq)
+
+
 find_package(cppzmq)
 if(cppzmq_FOUND)
     include_directories(${cppzmq_INCLUDE_DIR})
 endif()
 SET (CPPZMQ_BUILD_TESTS OFF CACHE INTERNAL "" FORCE)
-# pbuilder_add_submodule( cppzmq src/vendor/cppzmq )
+pbuilder_add_submodule( cppzmq src/vendor/cppzmq )
 SET (CPPZMQ_BUILD_TESTS OFF CACHE INTERNAL "" FORCE)
+# add_library(mycpp INTERFACE)
+# pbuilder_add_ext_libraries (cppzmq)
+MESSAGE (STATUS "etsgdsgv " ${EXTERNAL_LIBRARIES})
 
 ########
 # Scarab

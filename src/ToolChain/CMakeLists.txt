@@ -22,7 +22,7 @@ set (TOOLCHAIN_DEP_LIBRARIES
  Logging
  ServiceDiscovery
  Store
- cppzmq
+#  cppzmq
 )
 
 # set( STORE_LINKDEF_HEADERFILE LinkDef/ CoreLinkDef.h )

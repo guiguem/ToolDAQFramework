@@ -21,7 +21,7 @@ set (FACTORY_DEP_LIBRARIES
  Logger
  ServiceAdd
  Store
- cppzmq
+#  cppzmq
 )
 
 # set( STORE_LINKDEF_HEADERFILE LinkDef/ CoreLinkDef.h )

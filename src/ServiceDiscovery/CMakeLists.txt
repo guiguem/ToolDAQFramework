@@ -18,7 +18,7 @@ set( SERVICE_DISCOVERY_SOURCEFILES
 
 set (SERVICE_DISCOVERY_DEP_LIBRARIES
  Store
- cppzmq
+#  libzmq
 )
 
 # set( STORE_LINKDEF_HEADERFILE LinkDef/ CoreLinkDef.h )
