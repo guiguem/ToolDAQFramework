@@ -18,7 +18,7 @@ set( BASEDM_SOURCEFILES
 
 set (BASEDM_DEP_LIBRARIES
  Store
- cppzmq
+#  cppzmq
 )
 
 # set( STORE_LINKDEF_HEADERFILE LinkDef/ CoreLinkDef.h )

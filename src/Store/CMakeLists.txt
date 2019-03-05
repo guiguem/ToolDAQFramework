@@ -20,7 +20,6 @@ set( STORE_SOURCEFILES
 
 
 set (STORE_DEP_LIBRARIES
- ${Boost_LIBRARIES}
 )
 
 # set( STORE_LINKDEF_HEADERFILE LinkDef/ CoreLinkDef.h )

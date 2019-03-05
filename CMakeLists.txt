@@ -9,7 +9,7 @@ cmake_minimum_required (VERSION 3.1)
 #########
 
 cmake_policy( SET CMP0048 NEW ) # version in project()
-project( ToolDAQ VERSION 1.4.7 )
+project( ToolDAQFramework VERSION 1.4.7 )
 
 list( APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/src/Scarab/cmake )
 list( APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake )
@@ -56,21 +56,28 @@ mark_as_advanced(FLAG_WARNINGS)
 
 # ToolDAQ_process_options()
   
+if( UNIX AND NOT APPLE )
+    pbuilder_add_ext_libraries (rt)
+    set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--no-as-needed")
+endif( UNIX AND NOT APPLE )
 
 ######################
 # ToolDAQ dependencies #
 ######################
 
-SET (CPPZMQ_BUILD_TESTS OFF CACHE INTERNAL "" FORCE)
-pbuilder_add_submodule( cppzmq src/vendor/cppzmq )
-SET (CPPZMQ_BUILD_TESTS OFF CACHE INTERNAL "" FORCE)
 find_package(cppzmq)
+if(cppzmq_FOUND)
+    include_directories(${cppzmq_INCLUDE_DIR})
+endif()
+SET (CPPZMQ_BUILD_TESTS OFF CACHE INTERNAL "" FORCE)
+# pbuilder_add_submodule( cppzmq src/vendor/cppzmq )
+SET (CPPZMQ_BUILD_TESTS OFF CACHE INTERNAL "" FORCE)
 
 ########
 # Scarab
 ########
 
-# pbuilder_add_submodule( Scarab Scarab/library )
+# pbuilder_add_submodule( Scarab src/vendor/scarab/library )
 
 # this is needed for anything that wants to read or write JSON files
 # get_directory_property( RAPIDJSON_FILE_BUFFER_SIZE DIRECTORY Scarab/library DEFINITION RAPIDJSON_FILE_BUFFER_SIZE )
@@ -86,8 +93,11 @@ if (ToolDAQ_ENABLE_PYTHON)
     list(APPEND Boost_COMPONENTS python)
 endif (ToolDAQ_ENABLE_PYTHON)
 find_package (Boost 1.46.0 REQUIRED COMPONENTS ${Boost_COMPONENTS})
-# make sure dynamic linking is assumed for all boost libraries
-add_definitions (-DBOOST_ALL_DYN_LINK)
+# # make sure dynamic linking is assumed for all boost libraries
+# add_definitions (-DBOOST_ALL_DYN_LINK)
+set( Boost_USE_STATIC_LIBS OFF )
+set( Boost_USE_STATIC_RUNTIME OFF )
+set( Boost_ALL_DYN_LINK ON )
 include_directories (${Boost_INCLUDE_DIRS})
 pbuilder_add_ext_libraries (${Boost_LIBRARIES})
 
@@ -123,11 +133,11 @@ include_directories (BEFORE
     ${PROJECT_SOURCE_DIR}/src/Store
     ${PROJECT_SOURCE_DIR}/src/Tool
     ${PROJECT_SOURCE_DIR}/src/ToolChain
+    ${PROJECT_SOURCE_DIR}/src/vendor/cppzmq
     ${PROJECT_SOURCE_DIR}/UserTools/DummyTool
     ${PROJECT_SOURCE_DIR}/UserTools/Factory
     ${PROJECT_SOURCE_DIR}/UserTools/Logger
     ${PROJECT_SOURCE_DIR}/UserTools/ServiceAdd
-    ${PROJECT_SOURCE_DIR}/vendor/cppzmq
 #     ${PROJECT_SOURCE_DIR}/apps
 #     # ${PROJECT_SOURCE_DIR}/include
 #     ${PROJECT_SOURCE_DIR}/library/applications
