@@ -1,4 +1,4 @@
-#ifndef STORE_H 
+#ifndef STORE_H
 #define STORE_H
 
 #include <string>
@@ -15,67 +15,73 @@
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/map.hpp>
 
+class Store
+{
 
-class Store{
+  public:
+    Store();
+    void Initialise(std::string filename);
+    void JsonParser(std::string input);
+    void Print();
+    void Delete();
 
- public:
+    template <typename T>
+    bool Get(std::string name, T &out)
+    {
 
-  Store();
-  void Initialise(std::string filename);
-  void JsonParser(std::string input); 
-  void Print();
-  void Delete();
+        if (m_variables.count(name) > 0)
+        {
 
-  template<typename T> bool Get(std::string name,T &out){
-    
-    if(m_variables.count(name)>0){
+            std::stringstream stream(m_variables[name]);
+            stream >> out;
+            return true;
+        }
 
-      std::stringstream stream(m_variables[name]);
-      stream>>out;
-      return true;
+        else
+            return false;
     }
-    
-    else return false;
 
-  }
-  
-  template<typename T> void Set(std::string name,T in){
-    std::stringstream stream;
-    stream<<in;
-    m_variables[name]=stream.str();
-  }
-
-  std::string* operator[](std::string key){
-    return &m_variables[key];
-  }
-  
-  template<typename T> void operator>>(T& obj){
-    
-    std::stringstream stream;
-    stream<<"{";
-    bool first=true;
-    for (std::map<std::string,std::string>::iterator it=m_variables.begin(); it!=m_variables.end(); ++it){ 
-      if (!first) stream<<",";
-      stream<<"\""<<it->first<<"\":\""<< it->second<<"\"";
-      first=false;
+    template <typename T>
+    void Set(std::string name, T in)
+    {
+        std::stringstream stream;
+        stream << in;
+        m_variables[name] = stream.str();
     }
-    stream<<"}";
-    
-    obj=stream.str();
-   
-  } 
- 
- private:
 
-  std::map<std::string,std::string> m_variables;
+    std::string *operator[](std::string key)
+    {
+        return &m_variables[key];
+    }
 
-  friend class boost::serialization::access;
-  template<class Archive>
-  void serialize(Archive & ar, const unsigned int version)
-  {
-    ar & m_variables;
-  }
+    template <typename T>
+    void operator>>(T &obj)
+    {
 
+        std::stringstream stream;
+        stream << "{";
+        bool first = true;
+        for (std::map<std::string, std::string>::iterator it = m_variables.begin(); it != m_variables.end(); ++it)
+        {
+            if (!first)
+                stream << ",";
+            stream << "\"" << it->first << "\":\"" << it->second << "\"";
+            first = false;
+        }
+        stream << "}";
+
+        obj = stream.str();
+    }
+
+  private:
+    std::map<std::string, std::string> m_variables;
+
+    friend class boost::serialization::access;
+    template <class Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar &m_variables;
+    }
 };
 
 #endif

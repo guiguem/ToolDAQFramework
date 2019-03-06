@@ -1,6 +1,7 @@
 #include <string>
 #include "ToolChain.h"
 #include "DummyTool.h"
+#include <iostream>
 
 int main(int argc, char* argv[]){
 
@@ -10,6 +11,7 @@ int main(int argc, char* argv[]){
 
     ToolChain tools(conffile);
 
+    std::cout << "Done here" << std::endl;
 
   //DummyTool dummytool;    
 
