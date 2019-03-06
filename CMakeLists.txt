@@ -30,7 +30,7 @@ pbuilder_prepare_project()
 set_option( USE_CPP11 TRUE )
 
 # Build the ToolDAQ executable (also requires ToolDAQ_ENABLE_EXECUTABLES)
-option( ToolDAQ_BUILD_ToolDAQ_EXE "Flag to build the ToolDAQ executable; also requires ToolDAQ_ENABLE_EXECUTABLES" ON )
+option( ToolDAQ_BUILD_EXE "Flag to build the ToolDAQ executable; also requires ToolDAQ_ENABLE_EXECUTABLES" ON )
 
 # Build python bindings (requires boost::python)
 option( ToolDAQ_ENABLE_PYTHON "Build python bindings (ToolDAQPy)" OFF )
@@ -65,9 +65,20 @@ endif( UNIX AND NOT APPLE )
 # ToolDAQ dependencies #
 ######################
 
+########
+# ZeroMQ
+########
+
+set_option( WITH_DOC OFF )
+set_option( WITH_DOCS OFF )
+set_option( ZMQ_BUILD_TESTS OFF )
+set_option( WITH_PERF_TOOL OFF )
 pbuilder_add_submodule( libzmq src/vendor/libzmq )
 pbuilder_add_ext_libraries (libzmq)
 
+########
+# CPPZMQ
+########
 
 find_package(cppzmq)
 if(cppzmq_FOUND)
@@ -76,9 +87,6 @@ endif()
 SET (CPPZMQ_BUILD_TESTS OFF CACHE INTERNAL "" FORCE)
 pbuilder_add_submodule( cppzmq src/vendor/cppzmq )
 SET (CPPZMQ_BUILD_TESTS OFF CACHE INTERNAL "" FORCE)
-# add_library(mycpp INTERFACE)
-# pbuilder_add_ext_libraries (cppzmq)
-MESSAGE (STATUS "etsgdsgv " ${EXTERNAL_LIBRARIES})
 
 ########
 # Scarab
@@ -115,19 +123,6 @@ if (ToolDAQ_ENABLE_PYTHON)
 endif (ToolDAQ_ENABLE_PYTHON)
 
 
-###############
-# Build ToolDAQ #
-###############
-
-# include_directories (BEFORE 
-#     ${PROJECT_SOURCE_DIR}/Library/Utility
-#     ${PROJECT_SOURCE_DIR}/Library/Data
-#     ${PROJECT_SOURCE_DIR}/Library/Processor
-#     ${PROJECT_SOURCE_DIR}/Library/IO
-#     ${PROJECT_SOURCE_DIR}/Library/Application
-# )
-
-
 # #############
 # # ToolDAQ
 # #############
@@ -145,11 +140,6 @@ include_directories (BEFORE
     ${PROJECT_SOURCE_DIR}/UserTools/Factory
     ${PROJECT_SOURCE_DIR}/UserTools/Logger
     ${PROJECT_SOURCE_DIR}/UserTools/ServiceAdd
-#     ${PROJECT_SOURCE_DIR}/apps
-#     # ${PROJECT_SOURCE_DIR}/include
-#     ${PROJECT_SOURCE_DIR}/library/applications
-#     ${PROJECT_SOURCE_DIR}/library/core
-#     ${PROJECT_SOURCE_DIR}/library/misc
 )
 
 add_subdirectory (DataModel)
@@ -158,21 +148,11 @@ add_subdirectory (src/ServiceDiscovery)
 add_subdirectory (src/Store)
 add_subdirectory (src/Tool)
 add_subdirectory (src/ToolChain)
-add_subdirectory (UserTools/DummyTool)
-add_subdirectory (UserTools/Factory)
-add_subdirectory (UserTools/Logger)
-add_subdirectory (UserTools/ServiceAdd)
-# add_subdirectory (Tools/progress-cpp)
-# # add_subdirectory (src)
-# add_subdirectory (library/applications)
-# add_subdirectory (library/core)
-# add_subdirectory (library/misc)
-# add_subdirectory (apps)
-
+add_subdirectory (UserTools)
 
 # add_subdirectory( Library )
-# if (ToolDAQ_ENABLE_EXECUTABLES)
-#     add_subdirectory( Executables/Validation )
-# endif (ToolDAQ_ENABLE_EXECUTABLES)
+if (ToolDAQ_BUILD_EXE)
+    add_subdirectory( src/exe )
+endif (ToolDAQ_BUILD_EXE)
 
 pbuilder_variables_for_parent()

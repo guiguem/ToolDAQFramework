@@ -1,6 +1,3 @@
-[submodule "ToolDAQApplication"]
-	path = ToolDAQApplication
-	url = https://github.com/ToolDAQ/ToolDAQApplication.git
 [submodule "src/vendor/cppzmq"]
 	path = src/vendor/cppzmq
 	url = https://github.com/zeromq/cppzmq.git

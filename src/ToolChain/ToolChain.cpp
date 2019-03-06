@@ -2,6 +2,8 @@
 
 #include "DataModel.h"
 
+#include <iostream>
+
 ToolChain::ToolChain(std::string configfile)
 {
 
@@ -111,7 +113,6 @@ ToolChain::ToolChain(std::string configfile)
     else if (remote)
         Remote();
 
-    //printf("%s \n","finnished constructor");
 }
 
 ToolChain::ToolChain(int verbose, int errorlevel, std::string service, std::string logmode, std::string log_local_path, std::string log_service, int log_port, int pub_sec, int kick_sec, unsigned int IO_Threads)

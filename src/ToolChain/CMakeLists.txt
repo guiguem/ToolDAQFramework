@@ -1,4 +1,4 @@
-# CMakeLists for  Core
+# CMakeLists for  ToolChain
 # Author: M. Guigue
 # Date: Jan 15, 2019
 
