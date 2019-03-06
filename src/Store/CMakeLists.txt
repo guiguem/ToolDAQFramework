@@ -1,6 +1,6 @@
-# CMakeLists for  Core
-# Author: N. Oblath
-# Date: Jan 15, 2018
+# CMakeLists for Store
+# Author: M. Guigue
+# Date: Jan 15, 2019
 
 
 set( STORE_DICT_HEADERFILES

@@ -1,6 +1,6 @@
-# CMakeLists for  Core
-# Author: N. Oblath
-# Date: Jan 15, 2018
+# CMakeLists for ServiceDiscovery
+# Author: M. Guigue
+# Date: Jan 15, 2019
 
 
 set( SERVICE_DISCOVERY_DICT_HEADERFILES

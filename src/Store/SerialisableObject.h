@@ -8,33 +8,31 @@
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/map.hpp>
 
-class SerialisableObject{
-  
-  friend class boost::serialization::access;
-  
- public:
-  
-  virtual bool Print()=0;
-  virtual ~SerialisableObject(){};
-  bool serialise;
-  
- protected:
-  
-  std::string type;
-  std::string version;
-  
-  template<class Archive> void serialize(Archive & ar, const unsigned int version){  
-    if(serialise){
-      ar & type;
-      ar & version;
+class SerialisableObject
+{
+
+    friend class boost::serialization::access;
+
+  public:
+    virtual bool Print() = 0;
+    virtual ~SerialisableObject(){};
+    bool serialise;
+
+  protected:
+    std::string type;
+    std::string version;
+
+    template <class Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        if (serialise)
+        {
+            ar &type;
+            ar &version;
+        }
     }
-  }
-  
-  
- private:
 
+  private:
 };
-
-
 
 #endif

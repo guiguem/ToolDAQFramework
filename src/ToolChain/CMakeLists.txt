@@ -1,6 +1,6 @@
 # CMakeLists for  Core
-# Author: N. Oblath
-# Date: Jan 15, 2018
+# Author: M. Guigue
+# Date: Jan 15, 2019
 
 
 set( TOOLCHAIN_DICT_HEADERFILES
@@ -22,7 +22,6 @@ set (TOOLCHAIN_DEP_LIBRARIES
  Logging
  ServiceDiscovery
  Store
-#  cppzmq
 )
 
 # set( STORE_LINKDEF_HEADERFILE LinkDef/ CoreLinkDef.h )
