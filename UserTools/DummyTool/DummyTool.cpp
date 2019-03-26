@@ -1,8 +1,5 @@
 #include "DummyTool.h"
 
-DummyTool::DummyTool():Tool(){}
-
-
 bool DummyTool::Initialise(std::string configfile, DataModel &data){
 
   if(configfile!="")  m_variables.Initialise(configfile);

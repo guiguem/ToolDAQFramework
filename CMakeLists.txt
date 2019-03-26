@@ -26,8 +26,9 @@ pbuilder_prepare_project()
 # ToolDAQ options #
 #################
 
-# require C++11
-set_option( USE_CPP11 TRUE )
+# require C++14
+set_option( USE_CPP11 FALSE )
+set_option( USE_CPP14 TRUE )
 
 # Build the ToolDAQ executable (also requires ToolDAQ_ENABLE_EXECUTABLES)
 option( ToolDAQ_BUILD_EXE "Flag to build the ToolDAQ executable; also requires ToolDAQ_ENABLE_EXECUTABLES" ON )
@@ -133,8 +134,9 @@ include_directories (BEFORE
     ${PROJECT_SOURCE_DIR}/src/Logging
     ${PROJECT_SOURCE_DIR}/src/ServiceDiscovery
     ${PROJECT_SOURCE_DIR}/src/Store
-    ${PROJECT_SOURCE_DIR}/src/Tool
+    # # ${PROJECT_SOURCE_DIR}/src/Tool
     ${PROJECT_SOURCE_DIR}/src/ToolChain
+    # ${PROJECT_SOURCE_DIR}/src/ToolChainFactory
     ${PROJECT_SOURCE_DIR}/src/vendor/cppzmq
     ${PROJECT_SOURCE_DIR}/UserTools/DummyTool
     ${PROJECT_SOURCE_DIR}/UserTools/Factory
@@ -146,8 +148,9 @@ add_subdirectory (DataModel)
 add_subdirectory (src/Logging)
 add_subdirectory (src/ServiceDiscovery)
 add_subdirectory (src/Store)
-add_subdirectory (src/Tool)
+# # add_subdirectory (src/Tool)
 add_subdirectory (src/ToolChain)
+# add_subdirectory (src/ToolChainFactory)
 add_subdirectory (UserTools)
 
 # add_subdirectory( Library )

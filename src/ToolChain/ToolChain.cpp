@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-ToolChain::ToolChain(std::string configfile)
+ToolChain::ToolChain(std::string configfile) :m_toolbox()
 {
 
     m_data.vars.Initialise(configfile);
@@ -78,7 +78,9 @@ ToolChain::ToolChain(std::string configfile)
                     std::stringstream stream(line);
 
                     if (stream >> name >> tool >> conf)
-                        Add(name, Factory(tool), conf);
+                        m_data.Log->Log(name, 1, m_verbose);
+                        Add(name, m_toolbox.CreateTool(tool, name).get(), conf);
+                        // Add(name, Factory(tool), conf);
                 }
             }
         }

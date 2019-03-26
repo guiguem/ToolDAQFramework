@@ -19,6 +19,7 @@ set( DUMMYTOOL_SOURCEFILES
 set (DUMMYTOOL_DEP_LIBRARIES
  BaseDataModel
  Store
+ ToolChain
 #  cppzmq
 )
 

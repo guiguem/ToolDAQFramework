@@ -10,7 +10,7 @@
 #include <boost/uuid/uuid_generators.hpp> // generators                                                                     
 #include <boost/uuid/uuid_io.hpp>         // streaming operators etc.        
 
-class ServiceAdd: public Tool {
+class ServiceAdd : public Tool::Registrar<ServiceAdd> {
 
 
  public:

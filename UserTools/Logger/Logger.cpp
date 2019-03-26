@@ -1,8 +1,5 @@
 #include "Logger.h"
 
-Logger::Logger():Tool(){}
-
-
 bool Logger::Initialise(std::string configfile, DataModel &data){
 
   if(configfile!="")  m_variables.Initialise(configfile);

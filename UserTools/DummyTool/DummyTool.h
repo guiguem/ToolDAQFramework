@@ -4,14 +4,14 @@
 #include <string>
 #include <iostream>
 
+#include "DataModel.h"
 #include "Tool.h"
 
-class DummyTool: public Tool {
+class DummyTool : public Tool::Registrar<DummyTool> {
 
 
  public:
 
-  DummyTool();
   bool Initialise(std::string configfile,DataModel &data);
   bool Execute();
   bool Finalise();

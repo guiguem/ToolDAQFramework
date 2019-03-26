@@ -6,23 +6,18 @@
 
 #include "Tool.h"
 
-class Logger: public Tool {
 
+class Logger : public Tool::Registrar<Logger>
+{
 
- public:
+  public:
+    bool Initialise(std::string configfile, DataModel &data);
+    bool Execute();
+    bool Finalise();
 
-  Logger();
-  bool Initialise(std::string configfile,DataModel &data);
-  bool Execute();
-  bool Finalise();
-
-
- private:
-
-  int m_log_port;
-  zmq::socket_t *LogReceiver; 
-
+  private:
+    int m_log_port;
+    zmq::socket_t *LogReceiver;
 };
-
 
 #endif

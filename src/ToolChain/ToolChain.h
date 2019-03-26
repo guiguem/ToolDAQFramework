@@ -17,9 +17,10 @@
 #include <boost/progress.hpp>
 
 #include "Tool.h"
+#include "ToolBox.h"
 #include "Logging.h"
 #include "zmq.hpp"
-#include "Factory.h"
+#include "factory.h"
 #include "Store.h"
 #include "ServiceDiscovery.h"
 
@@ -77,6 +78,7 @@ class ToolChain
     ServiceDiscovery *SD;
 
     //Tools configs and data
+    ToolBox m_toolbox;
     std::vector<Tool *> m_tools;
     std::vector<std::string> m_toolnames;
     std::vector<std::string> m_configfiles;

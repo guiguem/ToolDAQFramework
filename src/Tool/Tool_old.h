@@ -6,7 +6,7 @@
 #include "Store.h"
 #include "DataModel.h"
 
-class Tool
+class Tool 
 {
 
   public:
