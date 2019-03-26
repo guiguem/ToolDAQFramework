@@ -10,7 +10,9 @@ Tool *Factory(std::string tool)
 
     // if (tool=="Type") tool=new Type;
     if (tool == "DummyTool")
+    {
         ret = new DummyTool;
+    }
     if (tool == "Logger")
         ret = new Logger;
 
