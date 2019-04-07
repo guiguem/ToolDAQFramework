@@ -8,7 +8,7 @@ class ToolBox
 {
     public:
     ToolBox(){}
-    std::unique_ptr<Tool> CreateTool(std::string toolName, std::string noise);
+    std::shared_ptr<Tool> CreateTool(std::string toolName, std::string noise);
 };
 
 #endif

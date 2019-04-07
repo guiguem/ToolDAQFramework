@@ -19,7 +19,7 @@ bool DummyTool::Execute(){
   
   Log("test 2",2,m_verbose);
   Log("Hey listen!",1,m_verbose);
-   sleep(2);
+//    sleep(2);
   return true;
 }
 

@@ -7,15 +7,36 @@
 #include "Store.h"
 #include "factory.h"
 
+#include <iostream>
+
 class Tool : public Factory<Tool, std::string>
 {
 
   public:
-    Tool(Key) {};
+    Tool() { std::cout << "Base constructor" << std::endl; };
+    Tool(Key) { std::cout << "Base constructor" << std::endl; };
     virtual bool Initialise(std::string configfile, DataModel &data) = 0;
+    // {
+    //     std::cout << "Base Initialise" << std::endl;
+    //     return true;
+    // };
     virtual bool Execute() = 0;
+    // {
+    //     std::cout << "Base Execute" << std::endl;
+    //     return true;
+    // };
     virtual bool Finalise() = 0;
-    virtual ~Tool(){};
+    // {
+    //     std::cout << "Base Finalise" << std::endl;
+    //     return true;
+    // };
+    // virtual ~Tool() = 0; 
+    // { std::cout << "Base destructor" << std::endl; };
+    virtual void Print()
+    {
+        std::cout << "Hello Tool" << std::endl;
+        std::cout << "Hello" << std::endl;
+    }
 
   protected:
     Store m_variables;

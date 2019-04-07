@@ -14,7 +14,7 @@
 
 //     int status = -4; // some arbitrary value to eliminate the compiler warning
 
-//     std::unique_ptr<char, void (*)(void *)> res{
+//     std::shared_ptr<char, void (*)(void *)> res{
 //         abi::__cxa_demangle(name, NULL, NULL, &status), std::free};
 
 //     return (status == 0) ? res.get() : name;
@@ -25,7 +25,7 @@ class Factory
 {
   public:
     template <class... T>
-    static std::unique_ptr<Base> make(const std::string &s, T &&... args)
+    static std::shared_ptr<Base> make(const std::string &s, T &&... args)
     {
         return data().at(s)(std::forward<T>(args)...);
     }
@@ -42,10 +42,10 @@ class Factory
             std::unique_ptr<char, void (*)(void *)> res{
                 abi::__cxa_demangle(typeid(T).name(), NULL, NULL, &status), std::free};
             const auto name = (status == 0) ? res.get() : typeid(T).name();
-                std::cout << "Here\t" << name << std::endl; 
-            Factory::data()[name] = [](Args... args) -> std::unique_ptr<Base> {
-                std::cout << "There"  << std::endl; 
-                return std::make_unique<T>(std::forward<Args>(args)...);
+            std::cout << "Here\t" << name << std::endl;
+            Factory::data()[name] = [](Args... args) -> std::shared_ptr<Base> {
+                std::cout << "There" << std::endl;
+                return std::make_shared<T>(std::forward<Args>(args)...);
             };
             std::cout << "Registered " << name << " as " << typeid(T).name() << std::endl;
             return true;
@@ -65,7 +65,7 @@ class Factory
         template <class T>
         friend struct Registrar;
     };
-    using FuncType = std::unique_ptr<Base> (*)(Args...);
+    using FuncType = std::shared_ptr<Base> (*)(Args...);
     Factory() = default;
 
     static auto &data()
