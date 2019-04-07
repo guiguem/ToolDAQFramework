@@ -9,6 +9,8 @@
 
 class DummyTool : public Tool::Registrar<DummyTool> {
 
+  public:
+    DummyTool(std::string x) {}
 
  public:
 

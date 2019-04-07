@@ -6,9 +6,10 @@
 
 #include "Tool.h"
 
-
 class Logger : public Tool::Registrar<Logger>
 {
+  public:
+    Logger(std::string x) {}
 
   public:
     bool Initialise(std::string configfile, DataModel &data);
