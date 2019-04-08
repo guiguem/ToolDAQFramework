@@ -12,9 +12,9 @@ class Logger : public Tool::Registrar<Logger>
     Logger(std::string x) {std::cout << "Logger constructor" << std::endl;}
 
   public:
-    bool Initialise(std::string configfile, DataModel &data);
-    bool Execute();
-    bool Finalise();
+    bool Initialise(std::string configfile, DataModel &data) override;
+    bool Execute() override;
+    bool Finalise() override;
 
     void Print() override
     {

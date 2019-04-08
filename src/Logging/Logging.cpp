@@ -194,14 +194,14 @@ src/Logging/Logging.{h,cpp} -nw
       messagebuffer.str("");
       messagebuffer<<lines.at(lines.size()-1);
       
-            /*
+            
 	MyStreamBuf buff(std::cout);
       buff.messagelevel=messagelevel;
       std::ostream out(&buff);     
       out<<message.str();//<< std::flush;
       //std::cout<<out;
-      */
-/*
+      
+
     }
 
     if (m_mode=="Local" || m_mode=="Remote"){ //send to file writer thread

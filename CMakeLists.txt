@@ -125,19 +125,17 @@ if (ToolDAQ_ENABLE_PYTHON)
 endif (ToolDAQ_ENABLE_PYTHON)
 
 
-# #############
-# # ToolDAQ
-# #############
+#############
+# ToolDAQ
+#############
 
-# # # subdirectories
+# subdirectories
 include_directories (BEFORE
     ${PROJECT_SOURCE_DIR}/DataModel
     ${PROJECT_SOURCE_DIR}/src/Logging
     ${PROJECT_SOURCE_DIR}/src/ServiceDiscovery
     ${PROJECT_SOURCE_DIR}/src/Store
-    # # ${PROJECT_SOURCE_DIR}/src/Tool
     ${PROJECT_SOURCE_DIR}/src/ToolChain
-    # ${PROJECT_SOURCE_DIR}/src/ToolChainFactory
     ${PROJECT_SOURCE_DIR}/src/vendor/cppzmq
     ${PROJECT_SOURCE_DIR}/UserTools/DummyTool
     ${PROJECT_SOURCE_DIR}/UserTools/Factory
@@ -149,14 +147,7 @@ add_subdirectory (DataModel)
 add_subdirectory (src/Logging)
 add_subdirectory (src/ServiceDiscovery)
 add_subdirectory (src/Store)
-# # add_subdirectory (src/Tool)
 add_subdirectory (src/ToolChain)
-# add_subdirectory (src/ToolChainFactory)
 add_subdirectory (UserTools)
-
-# add_subdirectory( Library )
-# if (ToolDAQ_BUILD_EXE)
-#     add_subdirectory( src/exe )
-# endif (ToolDAQ_BUILD_EXE)
 
 pbuilder_variables_for_parent()

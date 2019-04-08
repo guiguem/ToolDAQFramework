@@ -23,7 +23,6 @@ class DummyTool : public Tool::Registrar<DummyTool>
     void Print() override
     {
         std::cout << "Hello DummyTool" << std::endl;
-        std::cout << "Hello" << std::endl;
     }
 
   private:

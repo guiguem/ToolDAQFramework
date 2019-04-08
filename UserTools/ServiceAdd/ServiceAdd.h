@@ -16,9 +16,9 @@ class ServiceAdd : public Tool::Registrar<ServiceAdd> {
  public:
 
   ServiceAdd();
-  bool Initialise(std::string configfile,DataModel &data);
-  bool Execute();
-  bool Finalise();
+  bool Initialise(std::string configfile,DataModel &data) override;
+  bool Execute() override;
+  bool Finalise() override;
 
 
  private:

@@ -80,7 +80,6 @@ ToolChain::ToolChain(std::string configfile) : m_toolbox()
                     if (stream >> name >> tool >> conf)
                         m_data.Log->Log(name, 1, m_verbose);
                     auto theTool = m_toolbox.CreateTool(tool, name);
-                    theTool->Print();
                     // theTool->Initialise(conf, m_data);
                     // theTool->Execute();
                     Add(name, theTool, conf);
@@ -132,7 +131,7 @@ ToolChain::ToolChain(std::string configfile) : m_toolbox()
         Initialise();
         Execute(Inline);
         Finalise();
-        //exit(0);
+        exit(0);
     }
 
     else if (interactive)
@@ -252,18 +251,8 @@ int ToolChain::Initialise()
 
             try
             {
-                std::cout << m_tools.size() << std::endl;
-                std::cout << m_configfiles.size() << std::endl;
-                // std::cout << m_tools.at(i) << std::endl;
-
-                // Tool tool;
-                // tool.Print();
-                m_tools.at(i)->Print();
-                // if (m_tools.at(i)->Execute())
-                // std::cout << m_tools.at(i)->Initialise(m_configfiles.at(i), m_data) << std::endl;
                 if (m_tools.at(i)->Initialise(m_configfiles.at(i), m_data))
                 {
-                    m_tools.at(i)->Print();
                     //  if(m_verbose)*(m_data.Log)<<m_toolnames.at(i)<<" initialised successfully"<<std::endl<<std::endl;
                     logmessage << m_toolnames.at(i) << " initialised successfully" << std::endl;
                     m_data.Log->Log(logmessage.str(), 2, m_verbose);

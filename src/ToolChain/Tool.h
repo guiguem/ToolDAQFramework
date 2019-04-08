@@ -35,7 +35,6 @@ class Tool : public Factory<Tool, std::string>
     virtual void Print()
     {
         std::cout << "Hello Tool" << std::endl;
-        std::cout << "Hello" << std::endl;
     }
 
   protected:

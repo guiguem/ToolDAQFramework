@@ -9,17 +9,6 @@
 #include <cstdlib>
 #include <cxxabi.h>
 
-// std::string demangle(const char *name)
-// {
-
-//     int status = -4; // some arbitrary value to eliminate the compiler warning
-
-//     std::shared_ptr<char, void (*)(void *)> res{
-//         abi::__cxa_demangle(name, NULL, NULL, &status), std::free};
-
-//     return (status == 0) ? res.get() : name;
-// }
-
 template <class Base, class... Args>
 class Factory
 {
@@ -42,9 +31,7 @@ class Factory
             std::unique_ptr<char, void (*)(void *)> res{
                 abi::__cxa_demangle(typeid(T).name(), NULL, NULL, &status), std::free};
             const auto name = (status == 0) ? res.get() : typeid(T).name();
-            std::cout << "Here\t" << name << std::endl;
             Factory::data()[name] = [](Args... args) -> std::shared_ptr<Base> {
-                std::cout << "There" << std::endl;
                 return std::make_shared<T>(std::forward<Args>(args)...);
             };
             std::cout << "Registered " << name << " as " << typeid(T).name() << std::endl;
