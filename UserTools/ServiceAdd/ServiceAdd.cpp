@@ -1,8 +1,5 @@
 #include "ServiceAdd.h"
 
-ServiceAdd::ServiceAdd():Tool(){}
-
-
 bool ServiceAdd::Initialise(std::string configfile, DataModel &data){
 
   if(configfile!="")  m_variables.Initialise(configfile);

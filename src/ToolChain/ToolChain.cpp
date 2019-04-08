@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-ToolChain::ToolChain(std::string configfile)
+ToolChain::ToolChain(std::string configfile) : m_toolbox()
 {
 
     m_data.vars.Initialise(configfile);
@@ -78,7 +78,34 @@ ToolChain::ToolChain(std::string configfile)
                     std::stringstream stream(line);
 
                     if (stream >> name >> tool >> conf)
-                        Add(name, Factory(tool), conf);
+                        m_data.Log->Log(name, 1, m_verbose);
+                    auto theTool = m_toolbox.CreateTool(tool, name);
+                    // theTool->Initialise(conf, m_data);
+                    // theTool->Execute();
+                    Add(name, theTool, conf);
+                    // Add(name, Factory(tool), conf);
+                    // if (theTool != 0)
+                    // {
+                    //     // if(m_verbose)*(m_data.Log)<<"Adding Tool=\""<<name<<"\" tool chain"<<std::endl;
+                    //     logmessage << "Adding Tool='" << name << "' to ToolChain";
+                    //     m_data.Log->Log(logmessage.str(), 1, m_verbose);
+                    //     logmessage.str("");
+
+                    //     m_tools.push_back(std::move(theTool));
+                    //     m_toolnames.push_back(name);
+                    //     m_configfiles.push_back(configfile);
+
+                    //     //    if(m_verbose)*(m_data.Log)<<"Tool=\""<<name<<"\" added successfully"<<std::endl<<std::endl;
+                    //     logmessage << "Tool='" << name << "' added successfully" << std::endl;
+                    //     m_data.Log->Log(logmessage.str(), 1, m_verbose);
+                    //     logmessage.str("");
+                    // }
+                    // else
+                    // {
+                    //     logmessage << "WARNING!!! Tool='" << name << "' Does Not Exist in factory!!! " << std::endl;
+                    //     m_data.Log->Log(logmessage.str(), 0, m_verbose);
+                    //     logmessage.str("");
+                    // }
                 }
             }
         }
@@ -104,7 +131,7 @@ ToolChain::ToolChain(std::string configfile)
         Initialise();
         Execute(Inline);
         Finalise();
-        //exit(0);
+        exit(0);
     }
 
     else if (interactive)
@@ -112,7 +139,6 @@ ToolChain::ToolChain(std::string configfile)
 
     else if (remote)
         Remote();
-
 }
 
 ToolChain::ToolChain(int verbose, int errorlevel, std::string service, std::string logmode, std::string log_local_path, std::string log_service, int log_port, int pub_sec, int kick_sec, unsigned int IO_Threads)
@@ -169,7 +195,7 @@ void ToolChain::Init(unsigned int IO_Threads)
     msg_id = 0;
 }
 
-void ToolChain::Add(std::string name, Tool *tool, std::string configfile)
+void ToolChain::Add(std::string name, const std::shared_ptr<Tool> &tool, std::string configfile)
 {
     if (tool != 0)
     {
@@ -178,7 +204,7 @@ void ToolChain::Add(std::string name, Tool *tool, std::string configfile)
         m_data.Log->Log(logmessage.str(), 1, m_verbose);
         logmessage.str("");
 
-        m_tools.push_back(tool);
+        m_tools.push_back(std::move(tool));
         m_toolnames.push_back(name);
         m_configfiles.push_back(configfile);
 
@@ -292,6 +318,7 @@ int ToolChain::Execute(int repeates)
 {
     //boost::progress_timer t;
     int result = 0;
+    std::cout << repeates << std::endl;
 
     if (Initialised)
     {
@@ -301,7 +328,7 @@ int ToolChain::Execute(int repeates)
             logmessage << "********************************************************" << std::endl
                        << "**** Executing toolchain " << repeates << " times ****" << std::endl
                        << "********************************************************" << std::endl;
-            m_data.Log->Log(logmessage.str(), 2, m_verbose);
+            m_data.Log->Log(logmessage.str(), 1, m_verbose);
             logmessage.str("");
         }
 
@@ -317,7 +344,7 @@ int ToolChain::Execute(int repeates)
             logmessage << "********************************************************" << std::endl
                        << "**** Executing tools in toolchain ****" << std::endl
                        << "********************************************************" << std::endl;
-            m_data.Log->Log(logmessage.str(), 3, m_verbose);
+            m_data.Log->Log(logmessage.str(), 1, m_verbose);
             logmessage.str("");
 
             for (int i = 0; i < m_tools.size(); i++)
@@ -877,7 +904,7 @@ ToolChain::~ToolChain()
 
     for (int i = 0; i < m_tools.size(); i++)
     {
-        delete m_tools.at(i);
+        // delete m_tools.at(i);
         m_tools.at(i) = 0;
     }
 

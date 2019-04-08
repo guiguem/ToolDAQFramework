@@ -6,23 +6,24 @@
 
 #include "Tool.h"
 
-class Logger: public Tool {
+class Logger : public Tool::Registrar<Logger>
+{
+  public:
+    Logger(std::string x) {std::cout << "Logger constructor" << std::endl;}
 
+  public:
+    bool Initialise(std::string configfile, DataModel &data) override;
+    bool Execute() override;
+    bool Finalise() override;
 
- public:
+    void Print() override
+    {
+        std::cout << "Hello Logger" << std::endl;
+    }
 
-  Logger();
-  bool Initialise(std::string configfile,DataModel &data);
-  bool Execute();
-  bool Finalise();
-
-
- private:
-
-  int m_log_port;
-  zmq::socket_t *LogReceiver; 
-
+  private:
+    int m_log_port;
+    zmq::socket_t *LogReceiver;
 };
-
 
 #endif

@@ -17,9 +17,10 @@
 #include <boost/progress.hpp>
 
 #include "Tool.h"
+#include "ToolBox.h"
 #include "Logging.h"
 #include "zmq.hpp"
-#include "Factory.h"
+#include "factory.h"
 #include "Store.h"
 #include "ServiceDiscovery.h"
 
@@ -42,7 +43,7 @@ class ToolChain
     //verbosity: true= print out status messages , false= print only error messages;
     //errorlevels: 0= do not exit; error 1= exit if unhandeled error ; exit 2= exit on handeled and unhandeled errors;
     ~ToolChain();
-    void Add(std::string name, Tool *tool, std::string configfile = "");
+    void Add(std::string name, const std::shared_ptr<Tool>& tool, std::string configfile = "");
     int Initialise();
     int Execute(int repeates = 1);
     int Finalise();
@@ -77,7 +78,8 @@ class ToolChain
     ServiceDiscovery *SD;
 
     //Tools configs and data
-    std::vector<Tool *> m_tools;
+    ToolBox m_toolbox;
+    std::vector<std::shared_ptr<Tool>> m_tools;
     std::vector<std::string> m_toolnames;
     std::vector<std::string> m_configfiles;
     //DataModel m_data;

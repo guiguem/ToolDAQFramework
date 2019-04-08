@@ -4,24 +4,29 @@
 #include <string>
 #include <iostream>
 
+#include "DataModel.h"
 #include "Tool.h"
 
-class DummyTool: public Tool {
+class DummyTool : public Tool::Registrar<DummyTool>
+{
 
+  public:
+    DummyTool(std::string x)
+    {
+        std::cout << "Derived constructor" << std::endl;
+    }
 
- public:
+  public:
+    bool Initialise(std::string configfile, DataModel &data) override;
+    bool Execute() override;
+    bool Finalise() override;
+    void Print() override
+    {
+        std::cout << "Hello DummyTool" << std::endl;
+    }
 
-  DummyTool();
-  bool Initialise(std::string configfile,DataModel &data);
-  bool Execute();
-  bool Finalise();
-
-
- private:
-
-  int m_verbose;
-
+  private:
+    int m_verbose;
 };
-
 
 #endif

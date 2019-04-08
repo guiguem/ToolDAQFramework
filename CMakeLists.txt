@@ -26,8 +26,10 @@ pbuilder_prepare_project()
 # ToolDAQ options #
 #################
 
-# require C++11
-set_option( USE_CPP11 TRUE )
+# require C++14
+set_option( USE_CPP11 FALSE )
+set_option( USE_CPP14 TRUE )
+set(CMAKE_CXX_STANDARD 14)
 
 # Build the ToolDAQ executable (also requires ToolDAQ_ENABLE_EXECUTABLES)
 option( ToolDAQ_BUILD_EXE "Flag to build the ToolDAQ executable; also requires ToolDAQ_ENABLE_EXECUTABLES" ON )
@@ -123,17 +125,16 @@ if (ToolDAQ_ENABLE_PYTHON)
 endif (ToolDAQ_ENABLE_PYTHON)
 
 
-# #############
-# # ToolDAQ
-# #############
+#############
+# ToolDAQ
+#############
 
-# # # subdirectories
+# subdirectories
 include_directories (BEFORE
     ${PROJECT_SOURCE_DIR}/DataModel
     ${PROJECT_SOURCE_DIR}/src/Logging
     ${PROJECT_SOURCE_DIR}/src/ServiceDiscovery
     ${PROJECT_SOURCE_DIR}/src/Store
-    ${PROJECT_SOURCE_DIR}/src/Tool
     ${PROJECT_SOURCE_DIR}/src/ToolChain
     ${PROJECT_SOURCE_DIR}/src/vendor/cppzmq
     ${PROJECT_SOURCE_DIR}/UserTools/DummyTool
@@ -146,13 +147,7 @@ add_subdirectory (DataModel)
 add_subdirectory (src/Logging)
 add_subdirectory (src/ServiceDiscovery)
 add_subdirectory (src/Store)
-add_subdirectory (src/Tool)
 add_subdirectory (src/ToolChain)
 add_subdirectory (UserTools)
-
-# add_subdirectory( Library )
-if (ToolDAQ_BUILD_EXE)
-    add_subdirectory( src/exe )
-endif (ToolDAQ_BUILD_EXE)
 
 pbuilder_variables_for_parent()
