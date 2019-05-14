@@ -19,44 +19,43 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 
 #include "Store.h"
- 
 
-struct Logging_thread_args{
+struct Logging_thread_args
+{
+    Logging_thread_args(zmq::context_t *incontext, boost::uuids::uuid inUUID, std::string inlogservice, int inlogport)
+    {
+        context = incontext;
+        logservice = inlogservice;
+        UUID = inUUID;
+        logport = inlogport;
+    }
 
-  Logging_thread_args( zmq::context_t *incontext,  boost::uuids::uuid inUUID, std::string inlogservice, int inlogport){
-    context=incontext;
-    logservice=inlogservice;
-    UUID=inUUID;
-    logport=inlogport;
-  }
-
-  zmq::context_t *context;
-  boost::uuids::uuid UUID;
-  std::string remoteservice;
-  std::string logservice;
-  int logport;
+    zmq::context_t *context;
+    boost::uuids::uuid UUID;
+    std::string remoteservice;
+    std::string logservice;
+    int logport;
 };
 
+class Logging : public std::ostream
+{
 
-
-class Logging: public std::ostream {
-
-  class MyStreamBuf: public std::stringbuf
+    class MyStreamBuf : public std::stringbuf
     {
 
-      std::ostream&   output;
+        std::ostream &output;
 
-    public:
-      MyStreamBuf(std::ostream& str ,zmq::context_t *context,  boost::uuids::uuid UUID, std::string service, std::string mode, std::string localpath="", std::string logservice="", int logport=0);
+      public:
+        MyStreamBuf(std::ostream &str, zmq::context_t *context, boost::uuids::uuid UUID, std::string service, std::string mode, std::string localpath = "", std::string logservice = "", int logport = 0);
 
-      virtual int sync ( );
+        virtual int sync();
 
-      bool ChangeOutFile(std::string localpath);
+        bool ChangeOutFile(std::string localpath);
 
-      int m_messagelevel;
-      int m_verbose;
+        int m_messagelevel;
+        int m_verbose;
 
-      /*
+        /*
       {
 	output << "[blah]" << str();
 	str("");
@@ -64,50 +63,46 @@ class Logging: public std::ostream {
 	return 0;
       }
       */
-      ~MyStreamBuf();
+        ~MyStreamBuf();
 
-    private:
+      private:
+        zmq::context_t *m_context;
+        zmq::socket_t *LogSender;
+        pthread_t thread;
+        Logging_thread_args *args;
 
-      zmq::context_t *m_context;
-      zmq::socket_t *LogSender;
-      pthread_t thread;
-      Logging_thread_args *args;
+        std::string m_service;
+        std::string m_mode;
 
-      std::string m_service;
-      std::string m_mode;
+        std::ofstream file;
+        std::streambuf *psbuf, *backup;
 
-      std::ofstream file;
-      std::streambuf *psbuf, *backup;
+        static void *RemoteThread(void *arg);
+    };
 
-      static  void *RemoteThread(void* arg);
-     
-    }; 
+  public:
+    MyStreamBuf buffer;
 
- public:
-  MyStreamBuf buffer;
+    Logging(std::ostream &str, zmq::context_t *context, boost::uuids::uuid UUID, std::string service, std::string mode, std::string localpath = "", std::string logservice = "", int logport = 0) : std::ostream(&buffer), buffer(str, context, UUID, service, mode, localpath, logservice, logport){};
 
- Logging(std::ostream& str,zmq::context_t *context,  boost::uuids::uuid UUID, std::string service, std::string mode, std::string localpath="", std::string logservice="", int logport=0):std::ostream(&buffer),buffer(str, context, UUID, service, mode, localpath, logservice, logport){};
+    //  void Log(std::string message, int messagelevel=1, int verbose=1);
+    //  void Log(std::ostringstream& ost, int messagelevel=1, int verbose=1);
 
-  
-  //  void Log(std::string message, int messagelevel=1, int verbose=1);
-  //  void Log(std::ostringstream& ost, int messagelevel=1, int verbose=1);
+    template <typename T>
+    void Log(T message, int messagelevel = 1, int verbose = 1)
+    {
+        std::stringstream tmp;
+        tmp << message;
+        buffer.m_messagelevel = messagelevel;
+        buffer.m_verbose = verbose;
+        std::cout << tmp.str() << std::endl;
+        buffer.m_messagelevel = 1;
+        buffer.m_verbose = 1;
+    }
 
-  template <typename T>  void Log(T message, int messagelevel=1, int verbose=1){
-    std::stringstream tmp;
-    tmp<<message;
-    buffer.m_messagelevel=messagelevel;
-    buffer.m_verbose=verbose;
-    std::cout<<tmp.str()<<std::endl;
-    buffer.m_messagelevel=1;
-    buffer.m_verbose=1;
-  } 
+    bool ChangeOutFile(std::string localpath) { return buffer.ChangeOutFile(localpath); }
 
-  bool ChangeOutFile(std::string localpath){return buffer.ChangeOutFile(localpath);}
-
-  
-
-
-  /* 
+    /* 
   template<typename T>Logging& operator<<(T obj){ 
     std::stringstream tmp;
     tmp<<obj;
@@ -126,21 +121,19 @@ class Logging: public std::ostream {
   } 
 
 */
-  
- private:
-  
 
- //  static  void *LocalThread(void* arg);
- // static  void *RemoteThread(void* arg);
+  private:
+    //  static  void *LocalThread(void* arg);
+    // static  void *RemoteThread(void* arg);
 
-  //  zmq::context_t *m_context;
-  // zmq::socket_t *LogSender;
-  //pthread_t thread;
-  
-  // std::string m_mode;
+    //  zmq::context_t *m_context;
+    // zmq::socket_t *LogSender;
+    //pthread_t thread;
 
-  // std::ostringstream oss;
-  //std::ostringstream messagebuffer; 
+    // std::string m_mode;
+
+    // std::ostringstream oss;
+    //std::ostringstream messagebuffer;
 };
 
 /*
