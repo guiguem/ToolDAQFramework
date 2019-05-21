@@ -32,7 +32,7 @@ set_option( USE_CPP14 TRUE )
 set(CMAKE_CXX_STANDARD 14)
 
 # Build the ToolDAQ executable (also requires ToolDAQ_ENABLE_EXECUTABLES)
-option( ToolDAQ_BUILD_EXE "Flag to build the ToolDAQ executable; also requires ToolDAQ_ENABLE_EXECUTABLES" ON )
+option( ToolDAQ_BUILD_MAIN_EXE "Flag to build the ToolDAQ main executable; also requires ToolDAQ_ENABLE_EXECUTABLES" ON )
 
 # Build python bindings (requires boost::python)
 option( ToolDAQ_ENABLE_PYTHON "Build python bindings (ToolDAQPy)" OFF )
@@ -132,6 +132,7 @@ endif (ToolDAQ_ENABLE_PYTHON)
 # subdirectories
 include_directories (BEFORE
     ${PROJECT_SOURCE_DIR}/DataModel
+    ${PROJECT_SOURCE_DIR}/src/exe
     ${PROJECT_SOURCE_DIR}/src/Logging
     ${PROJECT_SOURCE_DIR}/src/ServiceDiscovery
     ${PROJECT_SOURCE_DIR}/src/Store
@@ -144,6 +145,7 @@ include_directories (BEFORE
 )
 
 add_subdirectory (DataModel)
+add_subdirectory (src/exe)
 add_subdirectory (src/Logging)
 add_subdirectory (src/ServiceDiscovery)
 add_subdirectory (src/Store)

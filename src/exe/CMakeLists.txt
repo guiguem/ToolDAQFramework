@@ -16,32 +16,15 @@ set( lib_dependencies
 )
 
 set( main_exe
-    main
-    # test
-    # NodeDaemon
-    # RemoteControl
+    NodeDaemon
+    RemoteControl
 )
-
+# Allows us to disable the main exe when using ToolDAQ as a submodule
+if (ToolDAQ_BUILD_MAIN_EXE)
+    list(APPEND main_exe main)
+endif(ToolDAQ_BUILD_MAIN_EXE)
 
 pbuilder_executables( main_exe lib_dependencies )
 
 
-# target_link_libraries(lib_dependencies Wrenches)
-
-
-set( lib_dependencies 
-    # ServiceDiscovery
-    # ToolChain
-    # DummyTool
-    ToolChainFactory
-    # Wrenches
-)
-
-set( test_exe
-    # main
-    test
-    # NodeDaemon
-    # RemoteControl
-)
-# pbuilder_executables( test_exe lib_dependencies)
 
