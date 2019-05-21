@@ -8,6 +8,7 @@
 //#include "TTree.h"
 
 #include "Store.h"
+#include "BoostStore.h"
 #include "Logging.h"
 
 #include <zmq.hpp>
@@ -18,24 +19,20 @@ class DataModel {
  public:
   
   DataModel();
+
   //TTree* GetTTree(std::string name);
   //void AddTTree(std::string name,TTree *tree);
-  //void DeleteTTree(std::string name,TTree *tree);
+  //void DeleteTTree(std::string name);
 
   Store vars;
+  BoostStore CStore;
+  std::map<std::string,BoostStore*> Stores;
+  
   Logging *Log;
 
   zmq::context_t* context;
 
 
-  //  bool (*Log)(std::string, int);
-
-  /*  
-  template<Type T>
-    struct Log {
-      typedef bool (*type)(T message,int verboselevel);
-    };
-  */
  private:
 
 
