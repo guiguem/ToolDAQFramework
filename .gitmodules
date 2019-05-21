@@ -1,9 +1,6 @@
 [submodule "src/vendor/cppzmq"]
 	path = src/vendor/cppzmq
 	url = https://github.com/zeromq/cppzmq.git
-[submodule "src/vendor/scarab"]
-	path = src/vendor/scarab
-	url = https://github.com/project8/scarab
 [submodule "src/vendor/libzmq"]
 	path = src/vendor/libzmq
 	url = https://github.com/zeromq/libzmq
