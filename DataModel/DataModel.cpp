@@ -17,7 +17,7 @@ void DataModel::AddTTree(std::string name,TTree *tree){
 }
 
 
-void DataModel::DeleteTTree(std::string name,TTree *tree){
+void DataModel::DeleteTTree(std::string name){
 
   m_trees.erase(name);
 
