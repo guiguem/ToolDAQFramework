@@ -20,7 +20,7 @@
 #include "ToolBox.h"
 #include "Logging.h"
 #include "zmq.hpp"
-#include "factory.h"
+#include "Factory.h"
 #include "Store.h"
 #include "ServiceDiscovery.h"
 

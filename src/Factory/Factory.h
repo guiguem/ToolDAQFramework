@@ -12,12 +12,17 @@
 template <class Base, class... Args>
 class Factory
 {
-  public:
+public:
     template <class... T>
     static std::shared_ptr<Base> make(const std::string &s, T &&... args)
     {
         return data().at(s)(std::forward<T>(args)...);
     }
+    // template <class... T>
+    // static std::shared_ptr<Base> make(const std::string &s)
+    // {
+    //     return data().at(s)(std::forward<T>(args)...);
+    // }
 
     template <class T>
     struct Registrar : Base
@@ -34,18 +39,18 @@ class Factory
             Factory::data()[name] = [](Args... args) -> std::shared_ptr<Base> {
                 return std::make_shared<T>(std::forward<Args>(args)...);
             };
-            std::cout << "Registered " << name << " as " << typeid(T).name() << std::endl;
+            std::cout << "Factory: Registered " << name << " as " << typeid(T).name() << std::endl;
             return true;
         }
         static bool registered;
 
-      private:
+    private:
         Registrar() : Base(Key{}) { (void)registered; }
     };
 
     friend Base;
 
-  private:
+private:
     class Key
     {
         Key(){};

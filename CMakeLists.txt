@@ -133,19 +133,21 @@ endif (ToolDAQ_ENABLE_PYTHON)
 include_directories (BEFORE
     ${PROJECT_SOURCE_DIR}/DataModel
     ${PROJECT_SOURCE_DIR}/src/exe
+    ${PROJECT_SOURCE_DIR}/src/Factory
     ${PROJECT_SOURCE_DIR}/src/Logging
     ${PROJECT_SOURCE_DIR}/src/ServiceDiscovery
     ${PROJECT_SOURCE_DIR}/src/Store
     ${PROJECT_SOURCE_DIR}/src/ToolChain
     ${PROJECT_SOURCE_DIR}/src/vendor/cppzmq
     ${PROJECT_SOURCE_DIR}/UserTools/DummyTool
-    ${PROJECT_SOURCE_DIR}/UserTools/Factory
+    # ${PROJECT_SOURCE_DIR}/UserTools/Factory
     ${PROJECT_SOURCE_DIR}/UserTools/Logger
     ${PROJECT_SOURCE_DIR}/UserTools/ServiceAdd
 )
 
 add_subdirectory (DataModel)
 add_subdirectory (src/exe)
+add_subdirectory (src/Factory)
 add_subdirectory (src/Logging)
 add_subdirectory (src/ServiceDiscovery)
 add_subdirectory (src/Store)

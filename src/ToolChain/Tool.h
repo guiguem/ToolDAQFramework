@@ -5,7 +5,7 @@
 
 #include "DataModel.h"
 #include "Store.h"
-#include "factory.h"
+#include "Factory.h"
 
 #include <iostream>
 
