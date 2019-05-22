@@ -9,7 +9,6 @@ class ToolBox
     public:
     ToolBox(){}
     std::shared_ptr<Tool> CreateTool(std::string toolName, std::string noise);
-    std::shared_ptr<SerialisableObject> CreateSerialObject(std::string objType, std::string objName);
 };
 
 #endif

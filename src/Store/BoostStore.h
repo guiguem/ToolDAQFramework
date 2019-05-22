@@ -31,7 +31,7 @@
 class BoostStore
 {
 
-  public:
+public:
     BoostStore(bool typechecking = true, int format = 0) : m_typechecking(typechecking), m_format(format)
     {
         findheader();
@@ -70,173 +70,23 @@ class BoostStore
     BoostStore *Header;
 
     template <typename T>
-    bool Get(std::string name, T &out)
-    {
-
-        if (m_variables.count(name) > 0)
-        {
-
-            if (m_type_info[name] == typeid(out).name() || !m_typechecking)
-            {
-
-                std::stringstream stream(m_variables[name]);
-                stream.str(m_archiveheader + stream.str());
-                if (m_format == 0 || m_format == 2)
-                {
-                    boost::archive::binary_iarchive ia(stream);
-                    ia &out;
-                }
-                else
-                {
-                    boost::archive::text_iarchive ia(stream);
-                    ia &out;
-                }
-
-                return true;
-            }
-            else
-                return false;
-        }
-
-        else
-            return false;
-    }
+    bool Get(std::string name, T &out);
 
     template <typename T>
-    bool Get(std::string name, T *&out)
-    {
-
-        if (m_variables.count(name) > 0 || m_ptrs.count(name) > 0)
-        {
-            if ((m_type_info[name] == typeid(T).name() || !m_typechecking) || (m_ptrs.count(name) > 0 && m_variables.count(name) == 0))
-            {
-                if (m_ptrs.count(name) == 0)
-                {
-
-                    T *tmp = new T;
-                    m_ptrs[name] = new PointerWrapper<T>(tmp);
-                    std::stringstream stream(m_variables[name]);
-                    stream.str(m_archiveheader + stream.str());
-
-                    if (m_format == 0 || m_format == 2)
-                    {
-
-                        boost::archive::binary_iarchive ia(stream);
-                        ia &*tmp;
-                    }
-                    else
-                    {
-                        boost::archive::text_iarchive ia(stream);
-                        ia &*tmp;
-                    }
-                }
-
-                PointerWrapper<T> *tmp = static_cast<PointerWrapper<T> *>(m_ptrs[name]);
-                out = tmp->pointer;
-
-                return true;
-            }
-            else
-                return false;
-        }
-
-        else
-            return false;
-    }
+    bool Get(std::string name, T *&out);
 
     template <typename T>
-    void Set(std::string name, T in)
-    {
-        std::stringstream stream;
-
-        if (m_format == 0 || m_format == 2)
-        {
-            boost::archive::binary_oarchive oa(stream);
-
-            oa &in;
-
-            stream.str(stream.str().replace(0, 40, ""));
-        }
-        else
-        {
-            boost::archive::text_oarchive oa(stream);
-            oa &in;
-            stream.str(stream.str().replace(0, 28, ""));
-        }
-
-        m_variables[name] = stream.str();
-        if (m_typechecking)
-            m_type_info[name] = typeid(in).name();
-    }
-
-    std::string *operator[](std::string key)
-    {
-        return &m_variables[key];
-    }
+    void Set(std::string name, T in);
 
     template <typename T>
-    void Set(std::string name, T *in, bool persist = true)
-    {
-
-        std::stringstream stream;
-
-        if (m_ptrs.count(name) > 0)
-        {
-            PointerWrapper<T> *tmp = static_cast<PointerWrapper<T> *>(m_ptrs[name]);
-
-            if (tmp->pointer != in)
-            {
-                delete m_ptrs[name];
-                m_ptrs[name] = 0;
-
-                m_ptrs[name] = new PointerWrapper<T>(in);
-            }
-        }
-
-        else if (m_ptrs.count(name) == 0)
-            m_ptrs[name] = new PointerWrapper<T>(in);
-
-        if (persist)
-        {
-            if (m_format == 0 || m_format == 2)
-            {
-                boost::archive::binary_oarchive oa(stream);
-                oa &*in;
-                stream.str(stream.str().replace(0, 40, ""));
-            }
-            else
-            {
-                boost::archive::text_oarchive oa(stream);
-                oa &*in;
-                stream.str(stream.str().replace(0, 28, ""));
-            }
-
-            m_variables[name] = stream.str();
-            if (m_typechecking)
-                m_type_info[name] = typeid(*in).name();
-        }
-    }
+    void Set(std::string name, T *in, bool persist = true);
 
     template <typename T>
-    void operator>>(T &obj)
-    {
+    void operator>>(T &obj);
 
-        std::stringstream stream;
-        stream << "{";
-        bool first = true;
-        for (std::map<std::string, std::string>::iterator it = m_variables.begin(); it != m_variables.end(); ++it)
-        {
-            if (!first)
-                stream << ",";
-            stream << "\"" << it->first << "\":\"" << it->second << "\"";
-            first = false;
-        }
-        stream << "}";
+    std::string *operator[](std::string key);
 
-        obj = stream.str();
-    }
-
-  private:
+private:
     unsigned long currententry;
     unsigned long totalentries;
     std::string entryfile;
@@ -259,64 +109,214 @@ class BoostStore
 
     friend class boost::serialization::access;
 
-    void findheader()
+    void findheader();
+
+    template <class Archive>
+    void serialize(Archive &ar, const unsigned int version);
+};
+
+// -------------------------------------------------------------
+
+template <typename T>
+bool BoostStore::Get(std::string name, T &out)
+{
+
+    if (m_variables.count(name) > 0)
     {
-        std::string tmp = "";
-        std::stringstream stream;
+
+        if (m_type_info[name] == typeid(out).name() || !m_typechecking)
+        {
+
+            std::stringstream stream(m_variables[name]);
+            stream.str(m_archiveheader + stream.str());
+            if (m_format == 0 || m_format == 2)
+            {
+                boost::archive::binary_iarchive ia(stream);
+                ia &out;
+            }
+            else
+            {
+                boost::archive::text_iarchive ia(stream);
+                ia &out;
+            }
+
+            return true;
+        }
+        else
+            return false;
+    }
+
+    else
+        return false;
+}
+
+template <typename T>
+bool BoostStore::Get(std::string name, T *&out)
+{
+
+    if (m_variables.count(name) > 0 || m_ptrs.count(name) > 0)
+    {
+        if ((m_type_info[name] == typeid(T).name() || !m_typechecking) || (m_ptrs.count(name) > 0 && m_variables.count(name) == 0))
+        {
+            if (m_ptrs.count(name) == 0)
+            {
+
+                T *tmp = new T;
+                m_ptrs[name] = new PointerWrapper<T>(tmp);
+                std::stringstream stream(m_variables[name]);
+                stream.str(m_archiveheader + stream.str());
+
+                if (m_format == 0 || m_format == 2)
+                {
+
+                    boost::archive::binary_iarchive ia(stream);
+                    ia &*tmp;
+                }
+                else
+                {
+                    boost::archive::text_iarchive ia(stream);
+                    ia &*tmp;
+                }
+            }
+
+            PointerWrapper<T> *tmp = static_cast<PointerWrapper<T> *>(m_ptrs[name]);
+            out = tmp->pointer;
+
+            return true;
+        }
+        else
+            return false;
+    }
+
+    else
+        return false;
+}
+
+template <typename T>
+void BoostStore::Set(std::string name, T in)
+{
+    std::stringstream stream;
+
+    if (m_format == 0 || m_format == 2)
+    {
+        boost::archive::binary_oarchive oa(stream);
+
+        oa &in;
+
+        stream.str(stream.str().replace(0, 40, ""));
+    }
+    else
+    {
+        boost::archive::text_oarchive oa(stream);
+        oa &in;
+        stream.str(stream.str().replace(0, 28, ""));
+    }
+
+    m_variables[name] = stream.str();
+    if (m_typechecking)
+        m_type_info[name] = typeid(in).name();
+}
+
+
+template <typename T>
+void BoostStore::Set(std::string name, T *in, bool persist)
+{
+
+    std::stringstream stream;
+
+    if (m_ptrs.count(name) > 0)
+    {
+        PointerWrapper<T> *tmp = static_cast<PointerWrapper<T> *>(m_ptrs[name]);
+
+        if (tmp->pointer != in)
+        {
+            delete m_ptrs[name];
+            m_ptrs[name] = 0;
+
+            m_ptrs[name] = new PointerWrapper<T>(in);
+        }
+    }
+
+    else if (m_ptrs.count(name) == 0)
+        m_ptrs[name] = new PointerWrapper<T>(in);
+
+    if (persist)
+    {
         if (m_format == 0 || m_format == 2)
         {
             boost::archive::binary_oarchive oa(stream);
-            oa &tmp;
+            oa &*in;
+            stream.str(stream.str().replace(0, 40, ""));
         }
         else
         {
             boost::archive::text_oarchive oa(stream);
-            oa &tmp;
+            oa &*in;
+            stream.str(stream.str().replace(0, 28, ""));
         }
-        if (m_format == 0 || m_format == 2)
-            m_archiveheader = stream.str().substr(0, 40);
-        else
-            m_archiveheader = stream.str().substr(0, 28);
-    }
 
-    template <class Archive>
-    void serialize(Archive &ar, const unsigned int version)
+        m_variables[name] = stream.str();
+        if (m_typechecking)
+            m_type_info[name] = typeid(*in).name();
+    }
+}
+
+template <typename T>
+void BoostStore::operator>>(T &obj)
+{
+
+    std::stringstream stream;
+    stream << "{";
+    bool first = true;
+    for (std::map<std::string, std::string>::iterator it = m_variables.begin(); it != m_variables.end(); ++it)
     {
-        if (m_format != 2)
+        if (!first)
+            stream << ",";
+        stream << "\"" << it->first << "\":\"" << it->second << "\"";
+        first = false;
+    }
+    stream << "}";
+
+    obj = stream.str();
+}
+
+template <class Archive>
+void BoostStore::serialize(Archive &ar, const unsigned int version)
+{
+    if (m_format != 2)
+    {
+        ar &m_variables;
+        if (m_typechecking)
+            ar &m_type_info;
+    }
+    else
+    {
+        if (oarch != 0)
         {
-            ar &m_variables;
-            if (m_typechecking)
-                ar &m_type_info;
+            Close();
+            std::ifstream tmp(outfile.c_str());
+            std::stringstream tmp2;
+            tmp2 << tmp.rdbuf();
+            std::string tmp3(tmp2.str());
+            ar &tmp3;
+            tmp.close();
+            remove(outfile.c_str());
         }
         else
         {
-            if (oarch != 0)
-            {
-                Close();
-                std::ifstream tmp(outfile.c_str());
-                std::stringstream tmp2;
-                tmp2 << tmp.rdbuf();
-                std::string tmp3(tmp2.str());
-                ar &tmp3;
-                tmp.close();
-                remove(outfile.c_str());
-            }
-            else
-            {
-                std::stringstream out;
-                out << "/tmp/" << time(0) << (rand() % 999999999);
-                tmpfile = out.str();
-                std::ofstream tmp(tmpfile.c_str());
-                std::string tmp2;
-                ar &tmp2;
-                std::stringstream tmp3(tmp2);
-                tmp << tmp2;
-                tmp.close();
-                m_format = 2;
-                Initialise(tmpfile.c_str(), 0);
-            }
+            std::stringstream out;
+            out << "/tmp/" << time(0) << (rand() % 999999999);
+            tmpfile = out.str();
+            std::ofstream tmp(tmpfile.c_str());
+            std::string tmp2;
+            ar &tmp2;
+            std::stringstream tmp3(tmp2);
+            tmp << tmp2;
+            tmp.close();
+            m_format = 2;
+            Initialise(tmpfile.c_str(), 0);
         }
     }
-};
+}
 
 #endif

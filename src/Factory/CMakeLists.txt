@@ -5,7 +5,6 @@
 
 set( FACTORY_DICT_HEADERFILES
     Factory.h
-    ToolBox.h
 )
 
 set( FACTORY_HEADERFILES
@@ -14,7 +13,6 @@ set( FACTORY_HEADERFILES
 
 set( FACTORY_SOURCEFILES
     Factory.cpp
-    ToolBox.cpp
 )
 
 

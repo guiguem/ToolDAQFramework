@@ -5,6 +5,7 @@
 
 set( TOOLCHAIN_DICT_HEADERFILES
     Tool.h
+    ToolBox.h
     ToolChain.h
 )
 
@@ -13,6 +14,7 @@ set( TOOLCHAIN_HEADERFILES
 )
 
 set( TOOLCHAIN_SOURCEFILES
+    ToolBox.cpp
     ToolChain.cpp
 )
 

@@ -6,6 +6,7 @@
 #include "DataModel.h"
 #include "Store.h"
 #include "Factory.h"
+#include "ObjectBox.h"
 
 #include <iostream>
 
@@ -13,8 +14,8 @@ class Tool : public Factory<Tool, std::string>
 {
 
   public:
-    Tool() { std::cout << "Base constructor" << std::endl; };
-    Tool(Key) { std::cout << "Base constructor" << std::endl; };
+    Tool(): m_objectbox() { std::cout << "Base constructor" << std::endl; };
+    Tool(Key):m_objectbox() { std::cout << "Base constructor" << std::endl; };
     virtual bool Initialise(std::string configfile, DataModel &data) = 0;
     // {
     //     std::cout << "Base Initialise" << std::endl;
@@ -39,6 +40,7 @@ class Tool : public Factory<Tool, std::string>
 
   protected:
     Store m_variables;
+    ObjectBox m_objectbox;
     DataModel *m_data;
     template <typename T>
     void Log(T message, int messagelevel = 1, int verbosity = 1) { m_data->Log->Log(message, messagelevel, verbosity); }

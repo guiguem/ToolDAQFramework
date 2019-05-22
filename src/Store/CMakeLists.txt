@@ -5,6 +5,7 @@
 
 set( STORE_DICT_HEADERFILES
     Store.h
+    ObjectBox.h
     PointerWrapper.h
     BoostStore.h
 )
@@ -15,6 +16,7 @@ set( STORE_HEADERFILES
 
 set( STORE_SOURCEFILES
     Store.cpp
+    ObjectBox.cpp
     BoostStore.cpp
 )
 
