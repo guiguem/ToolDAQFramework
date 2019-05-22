@@ -22,7 +22,6 @@ public:
     SerialisableObject() { std::cout << "Base constructor" << std::endl; };
     SerialisableObject(Key) { std::cout << "Base constructor" << std::endl; };
     virtual bool Print() = 0;
-    virtual std::string PrintAsString() = 0;
     virtual ~SerialisableObject(){};
     bool serialise;
 
