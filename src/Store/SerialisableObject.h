@@ -19,8 +19,8 @@ class SerialisableObject : public Factory<SerialisableObject, std::string>
     friend class boost::serialization::access;
 
 public:
-    SerialisableObject() { std::cout << "Base constructor" << std::endl; };
-    SerialisableObject(Key) { std::cout << "Base constructor" << std::endl; };
+    SerialisableObject() { };
+    SerialisableObject(Key) { };
     virtual bool Print() = 0;
     virtual ~SerialisableObject(){};
     bool serialise;
