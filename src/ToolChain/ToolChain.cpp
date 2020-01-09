@@ -207,6 +207,8 @@ void ToolChain::Init(unsigned int IO_Threads)
 void ToolChain::Add(std::string name, const std::shared_ptr<Tool> &tool, std::string configfile)
 {
     logmessage << "Tool='" << name << "' is about to be added" << std::endl;
+    m_data.Log->Log(logmessage.str(), 1, m_verbose);
+    logmessage.str("");
     if (tool != 0)
     {
         // if(m_verbose)*(m_data.Log)<<"Adding Tool=\""<<name<<"\" tool chain"<<std::endl;
