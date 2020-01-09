@@ -14,8 +14,8 @@ class Tool : public Factory<Tool, std::string>
 {
 
   public:
-    Tool(): m_objectbox() { std::cout << "Base constructor" << std::endl; };
-    Tool(Key):m_objectbox() { std::cout << "Base constructor" << std::endl; };
+    Tool(): m_objectbox() { std::cout << "Base Tool constructor" << std::endl; };
+    Tool(Key):m_objectbox() { std::cout << "Base Tool constructor" << std::endl; };
     virtual bool Initialise(std::string configfile, DataModel &data) = 0;
     // {
     //     std::cout << "Base Initialise" << std::endl;

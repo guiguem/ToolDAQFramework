@@ -61,6 +61,9 @@ ToolChain::ToolChain(std::string configfile) : m_toolbox()
 
     if (toolsfile != "")
     {
+        logmessage << "Reading Tool config: " << toolsfile << std::endl;
+        m_data.Log->Log(logmessage.str(), 1, m_verbose);
+        logmessage.str("");
         std::ifstream file(toolsfile.c_str());
         std::string line;
         if (file.is_open())
@@ -108,6 +111,12 @@ ToolChain::ToolChain(std::string configfile) : m_toolbox()
                     // }
                 }
             }
+        }
+        else
+        {
+            logmessage << "Tool config: " << toolsfile << " couldn't be open" << std::endl;
+            m_data.Log->Log(logmessage.str(), 1, m_verbose);
+            logmessage.str("");
         }
 
         file.close();
@@ -197,6 +206,7 @@ void ToolChain::Init(unsigned int IO_Threads)
 
 void ToolChain::Add(std::string name, const std::shared_ptr<Tool> &tool, std::string configfile)
 {
+    logmessage << "Tool='" << name << "' is about to be added" << std::endl;
     if (tool != 0)
     {
         // if(m_verbose)*(m_data.Log)<<"Adding Tool=\""<<name<<"\" tool chain"<<std::endl;
