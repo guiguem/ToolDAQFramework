@@ -5,6 +5,9 @@
 
 int main(int argc, char* argv[]){
 
+
+	Factory::showClasses();
+    
   std::string conffile;
   if (argc==1)conffile="configfiles/Dummy/ToolChainConfig";
   else conffile=argv[1];

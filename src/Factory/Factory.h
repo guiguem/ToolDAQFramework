@@ -94,6 +94,8 @@
 #define REGISTER_FACTORY(baseClass,derivedClass) \
 	namespace { auto registry_ ## derivedClass = ConcreteFactory<baseClass,derivedClass>(#derivedClass);  }
 
+#define quote(s) #s
+
           // ========>>> Forward declarations =====//
 class Base;
 
@@ -118,8 +120,8 @@ public:
 	}
 	/** Show all registered classes */
 	static
-	auto showClasses() -> void {
-		std::cout << " Registered classes. " << "\n";
+	auto showClasses(std::string type) -> void {
+		std::cout << " Registered " << type << " classes. " << "\n";
 		std::cout << " =================== " << "\n";
 		for(const auto& pair: Factory::getRegister())
 			std::cout << " + " << pair.first << "\n";
@@ -158,7 +160,7 @@ class ConcreteFactory: Factory<BaseClass>{
 public:
 	// Register this global object on the Factory register 
 	ConcreteFactory(const std::string& name){
-		std::cerr << " [TRACE] " << " Registered Class = " << name << "\n";
+		// std::cerr << " [TRACE] " << " Registered Class = " << name << "\n";
 		Factory<BaseClass>::registerFactory(name, this);
 	}
 	auto construct() const -> BaseClass* {

@@ -14,8 +14,7 @@ class Tool
 {
 
 public:
-    Tool() { std::cout << "Base Tool constructor" << std::endl; };
-    // Tool(Key) { std::cout << "Base Tool constructor" << std::endl; };
+    Tool() { };
     virtual bool Initialise(std::string configfile, DataModel &data) {return false;};
     // {
     //     std::cout << "Base Initialise" << std::endl;
