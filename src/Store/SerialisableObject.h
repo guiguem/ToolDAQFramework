@@ -13,15 +13,14 @@
 
 #include "Factory.h"
 
-class SerialisableObject : public Factory<SerialisableObject, std::string>
+class SerialisableObject
 {
 
     friend class boost::serialization::access;
 
 public:
     SerialisableObject() { };
-    SerialisableObject(Key) { };
-    virtual bool Print() = 0;
+    virtual bool Print() { return 0;};
     virtual ~SerialisableObject(){};
     bool serialise;
 
@@ -48,5 +47,16 @@ protected:
 
 private:
 };
+
+
+// // Register SerialisableObject class 
+// namespace {
+// 	// Anonymous namespace is used to make the definitions here private to the current
+// 	// compilation unit (current file). It is equivalent to the old C static keyword.
+// 	// It could be placed at Base.cpp 
+// 	ConcreteFactory<SerialisableObject,SerialisableObject> factorySerialisableObject("SerialisableObject");
+// }
+
+// REGISTER_FACTORY(SerialisableObject)
 
 #endif

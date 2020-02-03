@@ -14,6 +14,7 @@ set( TOOLCHAIN_HEADERFILES
 )
 
 set( TOOLCHAIN_SOURCEFILES
+    # Tool.cpp
     ToolBox.cpp
     ToolChain.cpp
 )
