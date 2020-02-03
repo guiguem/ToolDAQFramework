@@ -6,10 +6,10 @@
 
 #include "Tool.h"
 
-class Logger : public Tool::Registrar<Logger>
+class Logger : public Tool
 {
   public:
-    Logger(std::string x) {std::cout << "Logger constructor" << std::endl;}
+    Logger() {std::cout << "Logger constructor" << std::endl;}
 
   public:
     bool Initialise(std::string configfile, DataModel &data) override;
@@ -25,5 +25,7 @@ class Logger : public Tool::Registrar<Logger>
     int m_log_port;
     zmq::socket_t *LogReceiver;
 };
+
+REGISTER_FACTORY(Tool,Logger)
 
 #endif

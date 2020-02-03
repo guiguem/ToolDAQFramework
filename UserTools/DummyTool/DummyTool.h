@@ -7,11 +7,11 @@
 #include "DataModel.h"
 #include "Tool.h"
 
-class DummyTool : public Tool::Registrar<DummyTool>
+class DummyTool : public Tool
 {
 
   public:
-    DummyTool(std::string x)
+    DummyTool()
     {
         std::cout << "Derived constructor" << std::endl;
     }
@@ -28,5 +28,7 @@ class DummyTool : public Tool::Registrar<DummyTool>
   private:
     int m_verbose;
 };
+
+REGISTER_FACTORY(Tool,DummyTool)
 
 #endif
