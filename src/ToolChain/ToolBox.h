@@ -1,6 +1,7 @@
 #ifndef TOOLBOX_H
 #define TOOLBOX_H
 #include "Tool.h"
+#include "Factory.h"
 
 #include <iostream>
 

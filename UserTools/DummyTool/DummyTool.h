@@ -4,28 +4,28 @@
 #include <string>
 #include <iostream>
 
-#include "DataModel.h"
+#include "Factory.h"
 #include "Tool.h"
 
+/**
+ * \class DummyTool
+ *
+ * This is a simple dummy Tool designed to show operation of a Tool. It also provides a default Tool for the Default ToolChain.
+*
+* $Author: B.Richards $
+* $Date: 2019/05/28 10:44:00 $
+* Contact: b.richards@qmul.ac.uk
+*/
 class DummyTool : public Tool
 {
 
-  public:
-    DummyTool()
-    {
-        std::cout << "Derived constructor" << std::endl;
-    }
+public:
+    DummyTool(){};                                              ///< Constructor
+    bool Initialise(std::string configfile, DataModel &data); ///< Assigns verbosity from config file and creates a log message.
+    bool Execute();                                           ///< Creates a log message.
+    bool Finalise();                                          ///< Does nothing
 
-  public:
-    bool Initialise(std::string configfile, DataModel &data) override;
-    bool Execute() override;
-    bool Finalise() override;
-    void Print() override
-    {
-        std::cout << "Hello DummyTool" << std::endl;
-    }
-
-  private:
+private:
     int m_verbose;
 };
 

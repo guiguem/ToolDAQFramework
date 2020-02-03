@@ -2,7 +2,6 @@
 
 bool Logger::Initialise(std::string configfile, DataModel &data)
 {
-    std::cout << "HERE" << std::endl;
 
     if (configfile != "")
         m_variables.Initialise(configfile);
@@ -27,7 +26,6 @@ bool Logger::Initialise(std::string configfile, DataModel &data)
 
 bool Logger::Execute()
 {
-    std::cout << "skjdsdj" << std::endl;
 
     zmq::pollitem_t items[] = {
         {*(LogReceiver), 0, ZMQ_POLLIN, 0}};

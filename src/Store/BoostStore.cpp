@@ -322,7 +322,7 @@ bool BoostStore::GetEntry(unsigned long entry)
 
         else if (entry > currententry)
         {
-
+            Delete();
             for (unsigned long i = currententry; i < entry; i++)
             {
 
@@ -338,6 +338,7 @@ bool BoostStore::GetEntry(unsigned long entry)
         else if (entry < currententry)
         {
 
+            Delete();
             delete arch;
             arch = 0;
             file->close();
@@ -456,30 +457,4 @@ BoostStore::~BoostStore()
 {
     Delete();
     remove(tmpfile.c_str());
-}
-
-
-void BoostStore::findheader()
-{
-    std::string tmp = "";
-    std::stringstream stream;
-    if (m_format == 0 || m_format == 2)
-    {
-        boost::archive::binary_oarchive oa(stream);
-        oa &tmp;
-    }
-    else
-    {
-        boost::archive::text_oarchive oa(stream);
-        oa &tmp;
-    }
-    if (m_format == 0 || m_format == 2)
-        m_archiveheader = stream.str().substr(0, 40);
-    else
-        m_archiveheader = stream.str().substr(0, 28);
-}
-
-std::string* BoostStore::operator[](std::string key)
-{
-    return &m_variables[key];
 }

@@ -1,17 +1,22 @@
 #ifndef SERIALISABLEOBJECT_H
 #define SERIALISABLEOBJECT_H
 
-#include <iostream>
-
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/map.hpp>
-#include <boost/serialization/shared_ptr.hpp>
 
-#include "Factory.h"
+/**
+ * \class SerialisableObject
+ *
+ * An abstract base class for sustom calsses to inherit from to ensure version and type information are present, as well as a Print function and some form of sereialisation.
+*
+* $Author: B.Richards $
+* $Date: 2019/05/28 10:44:00 $
+* Contact: b.richards@qmul.ac.uk
+*/
 
 class SerialisableObject
 {
@@ -19,14 +24,14 @@ class SerialisableObject
     friend class boost::serialization::access;
 
 public:
-    SerialisableObject() { };
-    virtual bool Print() { return 0;};
-    virtual ~SerialisableObject(){};
-    bool serialise;
+    virtual bool Print() = 0; ///< Simple virtual Pritn function to ensure inhereted classes have one
+    // virtual ~SerialisableObject(){}; ///< Destructor
+    bool serialise; ///< Denotes if the calss should be serialised or not when added to a BoostStore.
 
-protected:
-    std::string type;
-    std::string version;
+    //protected:
+
+    //std::string type; ///< String to store type of Tool
+    //std::string version; ///< String to store version of Tool
 
     // Needed so we can write it into a text file (via TextWriterTool)
     friend std::ostream &operator<<(std::ostream &out, const SerialisableObject &obj)
@@ -35,28 +40,18 @@ protected:
         return out;
     };
 
-    template <class Archive>
-    void serialize(Archive &ar, const unsigned int version)
-    {
-        if (serialise)
-        {
-            ar &type;
-            ar &version;
-        }
+    /**
+     Simple Boost serialise method to serialise the membervariables of a custom class. This shuld be expanded to include the custom classes variables
+     @param ar Boost archive.
+     @param version of the archive.
+   */
+    /*    template<class Archive> void serialize(Archive & ar, const unsigned int version){  
+    if(serialise){
+      ar & type;
+      ar & version;
     }
-
-private:
+  }
+  */
 };
-
-
-// // Register SerialisableObject class 
-// namespace {
-// 	// Anonymous namespace is used to make the definitions here private to the current
-// 	// compilation unit (current file). It is equivalent to the old C static keyword.
-// 	// It could be placed at Base.cpp 
-// 	ConcreteFactory<SerialisableObject,SerialisableObject> factorySerialisableObject("SerialisableObject");
-// }
-
-// REGISTER_FACTORY(SerialisableObject)
 
 #endif

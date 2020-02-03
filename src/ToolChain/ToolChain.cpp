@@ -1,9 +1,5 @@
 #include "ToolChain.h"
 
-#include "DataModel.h"
-
-#include <iostream>
-
 ToolChain::ToolChain(std::string configfile) : m_toolbox()
 {
 
@@ -81,34 +77,11 @@ ToolChain::ToolChain(std::string configfile) : m_toolbox()
                     std::stringstream stream(line);
 
                     if (stream >> name >> tool >> conf)
+                    {
                         m_data.Log->Log(name, 1, m_verbose);
                     auto theTool = m_toolbox.CreateTool(tool, name);
-                    // theTool->Initialise(conf, m_data);
-                    // theTool->Execute();
                     Add(name, theTool, conf);
-                    // Add(name, Factory(tool), conf);
-                    // if (theTool != 0)
-                    // {
-                    //     // if(m_verbose)*(m_data.Log)<<"Adding Tool=\""<<name<<"\" tool chain"<<std::endl;
-                    //     logmessage << "Adding Tool='" << name << "' to ToolChain";
-                    //     m_data.Log->Log(logmessage.str(), 1, m_verbose);
-                    //     logmessage.str("");
-
-                    //     m_tools.push_back(std::move(theTool));
-                    //     m_toolnames.push_back(name);
-                    //     m_configfiles.push_back(configfile);
-
-                    //     //    if(m_verbose)*(m_data.Log)<<"Tool=\""<<name<<"\" added successfully"<<std::endl<<std::endl;
-                    //     logmessage << "Tool='" << name << "' added successfully" << std::endl;
-                    //     m_data.Log->Log(logmessage.str(), 1, m_verbose);
-                    //     logmessage.str("");
-                    // }
-                    // else
-                    // {
-                    //     logmessage << "WARNING!!! Tool='" << name << "' Does Not Exist in factory!!! " << std::endl;
-                    //     m_data.Log->Log(logmessage.str(), 0, m_verbose);
-                    //     logmessage.str("");
-                    // }
+                    }
                 }
             }
         }
@@ -140,7 +113,7 @@ ToolChain::ToolChain(std::string configfile) : m_toolbox()
         Initialise();
         Execute(Inline);
         Finalise();
-        exit(0);
+        //exit(0);
     }
 
     else if (interactive)
@@ -148,6 +121,8 @@ ToolChain::ToolChain(std::string configfile) : m_toolbox()
 
     else if (remote)
         Remote();
+
+    //printf("%s \n","finnished constructor");
 }
 
 ToolChain::ToolChain(int verbose, int errorlevel, std::string service, std::string logmode, std::string log_local_path, std::string log_service, int log_port, int pub_sec, int kick_sec, unsigned int IO_Threads)
@@ -330,7 +305,6 @@ int ToolChain::Execute(int repeates)
 {
     //boost::progress_timer t;
     int result = 0;
-    std::cout << repeates << std::endl;
 
     if (Initialised)
     {
@@ -340,7 +314,7 @@ int ToolChain::Execute(int repeates)
             logmessage << "********************************************************" << std::endl
                        << "**** Executing toolchain " << repeates << " times ****" << std::endl
                        << "********************************************************" << std::endl;
-            m_data.Log->Log(logmessage.str(), 1, m_verbose);
+            m_data.Log->Log(logmessage.str(), 2, m_verbose);
             logmessage.str("");
         }
 
@@ -356,7 +330,7 @@ int ToolChain::Execute(int repeates)
             logmessage << "********************************************************" << std::endl
                        << "**** Executing tools in toolchain ****" << std::endl
                        << "********************************************************" << std::endl;
-            m_data.Log->Log(logmessage.str(), 1, m_verbose);
+            m_data.Log->Log(logmessage.str(), 3, m_verbose);
             logmessage.str("");
 
             for (int i = 0; i < m_tools.size(); i++)
@@ -731,7 +705,8 @@ std::string ToolChain::ExecuteCommand(std::string command)
             returnmsg << "command not recognised please try again";
         }
     }
-
+    if (Finalised || (!Finalised && !exeloop))
+        usleep(100);
     if (exeloop)
         Execute();
     return returnmsg.str();
@@ -935,7 +910,7 @@ ToolChain::~ToolChain()
     //printf("%s \n","tdebug 6");
     //  context->close();
     //printf("%s \n","tdebug 6.5");
-    delete context;
+    //delete context;
     // printf("%s \n","tdebug 7");
     context = 0;
     //printf("%s \n","tdebug 8");

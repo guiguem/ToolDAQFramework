@@ -84,3 +84,9 @@ void Store::JsonParser(std::string input)
         //}
     }
 }
+
+bool Store::Has(std::string key)
+{
+
+    return (m_variables.count(key) != 0);
+}
